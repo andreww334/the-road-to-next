@@ -1,6 +1,22 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@keyframes fade-from-top {
+  /* Define your keyframes here */
+  0% {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-from-top {
+  animation: fade-from-top 0.5s ease-out;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
