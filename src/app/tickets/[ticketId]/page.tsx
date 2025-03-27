@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Placeholder } from "@/components/Placeholder";
 import { Button } from "@/components/ui/button";
-import { initialTickets } from "@/data";
 import { TicketItem } from "@/features/ticket/components/ticket-item";
+import { getTicket } from "@/features/ticket/queries/get-ticket";
 import { ticketsPath } from "@/paths";
 
 type TicketPageProps = {
@@ -13,10 +13,8 @@ type TicketPageProps = {
 
 const TicketsPage = async ({ params }: TicketPageProps) => {
   const { ticketId } = await params;
-  const foundTicket = initialTickets.find(
-    (ticket) => ticket.id === Number(ticketId)
-  );
-  if (!foundTicket) {
+  const ticket = await getTicket(ticketId);
+  if (!ticket) {
     return (
       <Placeholder
         label="Ticket Not Found"
@@ -30,7 +28,7 @@ const TicketsPage = async ({ params }: TicketPageProps) => {
   }
   return (
     <div className="flex justify-center animate-fade-from-top">
-      <TicketItem ticket={foundTicket} isDetail={true} />
+      <TicketItem ticket={ticket} isDetail={true} />
     </div>
   );
 };
