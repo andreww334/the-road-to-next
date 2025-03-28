@@ -1,7 +1,7 @@
 export type TicketStatus = "OPEN" | "DONE" | "IN_PROGRESS";
 
 export type Ticket = {
-  id: number;
+  id: string;
   title: string;
   content: string;
   status: TicketStatus;
