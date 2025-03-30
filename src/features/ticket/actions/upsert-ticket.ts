@@ -5,7 +5,10 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { ticketPath, ticketsPath } from "@/paths";
-import { ActionState, fromErrorToActionState } from "../components/form/utils";
+import {
+  ActionState,
+  fromErrorToActionState,
+} from "../components/form/utils/to-action-state";
 
 const upsertTicketSchema = z.object({
   title: z.string().min(1).max(191),
@@ -37,5 +40,5 @@ export const upsertTicket = async (
   if (id) {
     redirect(ticketPath(id));
   }
-  return { message: "Ticket created" };
+  return { message: "Ticket created", fieldErrors: {} };
 };
