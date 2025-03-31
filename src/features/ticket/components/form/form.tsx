@@ -12,13 +12,11 @@ const Form = ({ action, actionState, children }: FormProps) => {
   useActionFeedback(actionState, {
     onSuccess: ({ actionState }) => {
       if (actionState.message) {
-        console.log(`successful: ${actionState.message}`);
         toast.success(actionState.message);
       }
     },
     onError: ({ actionState }) => {
       if (actionState.message) {
-        console.log(`error: ${actionState.message}`);
         toast.error(actionState.message);
       }
     },
