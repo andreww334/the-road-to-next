@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { upsertTicket } from "../actions/upsert-ticket";
 import { FieldError } from "./field-error";
 import { SubmitButton } from "./form/submit-button";
+import { EMPTY_ACTION_STATE } from "./form/utils/to-action-state";
 
 type TicketUpsertFormProps = {
   ticket?: Ticket;
@@ -15,8 +16,9 @@ type TicketUpsertFormProps = {
 const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
   const [actionState, action] = useActionState(
     upsertTicket.bind(null, ticket?.id),
-    { message: "", fieldErrors: {} }
+    EMPTY_ACTION_STATE
   );
+
   return (
     <form action={action} className="flex flex-col gap-y-2">
       <Label htmlFor="title">Title</Label>
@@ -25,7 +27,9 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         name="title"
         type="text"
         defaultValue={
-          (actionState.payload?.get("title") as string) ?? ticket?.title
+          "payload" in actionState
+            ? ((actionState.payload as FormData).get("title") as string)
+            : ticket?.title
         }
       />
       <FieldError actionState={actionState} name="title" />
@@ -35,7 +39,9 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
         name="content"
         rows={4}
         defaultValue={
-          (actionState.payload?.get("content") as string) ?? ticket?.content
+          "payload" in actionState
+            ? ((actionState.payload as FormData).get("content") as string)
+            : ticket?.content
         }
       />
       <FieldError actionState={actionState} name="content" />

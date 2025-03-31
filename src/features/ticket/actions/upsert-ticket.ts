@@ -8,6 +8,7 @@ import { ticketPath, ticketsPath } from "@/paths";
 import {
   ActionState,
   fromErrorToActionState,
+  toActionState,
 } from "../components/form/utils/to-action-state";
 
 const upsertTicketSchema = z.object({
@@ -40,5 +41,5 @@ export const upsertTicket = async (
   if (id) {
     redirect(ticketPath(id));
   }
-  return { message: "Ticket created", fieldErrors: {} };
+  return toActionState("SUCCESS", "Ticket created");
 };
