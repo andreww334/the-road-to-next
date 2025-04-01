@@ -19,15 +19,21 @@ const DatePicker = ({ id, name, defaultValue }: DatePickerProps) => {
   const [date, setDate] = useState<Date | undefined>(
     defaultValue ? new Date(defaultValue) : new Date()
   );
+  const [open, setOpen] = useState(false);
 
   const formattedStringDate = date ? format(date, "yyyy-MM-dd") : "";
+  const handleSelect = (date?: Date) => {
+    setDate(date);
+    setOpen(false);
+  };
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger className="w-full" id={id} asChild>
         <Button
           variant={"outline"}
           className="justify-start text-left font-normal"
+          onClick={() => setOpen(true)}
         >
           <LucideCalendar className="mr-2 h-4 w-4" />
           {formattedStringDate}
@@ -38,7 +44,7 @@ const DatePicker = ({ id, name, defaultValue }: DatePickerProps) => {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleSelect}
           initialFocus
         />
       </PopoverContent>
