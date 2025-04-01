@@ -5,6 +5,7 @@ import { useActionState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { fromCent } from "@/utils/currency";
 import { upsertTicket } from "../actions/upsert-ticket";
 import { FieldError } from "./form/field-error";
 import { Form } from "./form/form";
@@ -59,6 +60,7 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
                 : ticket?.deadline
             }
           />
+          <FieldError actionState={actionState} name="deadline" />
         </div>
         <div className="w-1/2">
           <Label htmlFor="bounty">Bounty ($)</Label>
@@ -71,13 +73,15 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
               "payload" in actionState
                 ? ((actionState.payload as FormData).get("bounty") as string)
                 : ticket?.bounty
+                ? fromCent(ticket.bounty)
+                : ""
             }
-          />
+          />{" "}
+          <FieldError actionState={actionState} name="bounty" />
         </div>
       </div>
 
       <SubmitButton label={ticket ? "Edit" : "Create"} />
-      {actionState.message}
     </Form>
   );
 };
