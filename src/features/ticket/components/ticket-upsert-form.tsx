@@ -2,6 +2,7 @@
 
 import { Ticket } from "@prisma/client";
 import { useActionState } from "react";
+import { DatePicker } from "@/components/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -50,10 +51,19 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
       <div className="flex gap-x-2 mb-1">
         <div className="w-1/2">
           <Label htmlFor="deadline">Deadline</Label>
-          <Input
+          {/* <Input
             id="deadline"
             name="deadline"
             type="date"
+            defaultValue={
+              "payload" in actionState
+                ? ((actionState.payload as FormData).get("deadline") as string)
+                : ticket?.deadline
+            }
+          /> */}
+          <DatePicker
+            id="deadline"
+            name="deadline"
             defaultValue={
               "payload" in actionState
                 ? ((actionState.payload as FormData).get("deadline") as string)
