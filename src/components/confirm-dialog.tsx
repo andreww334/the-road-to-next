@@ -45,7 +45,7 @@ const useConfirmDialog = ({
     } as React.HTMLAttributes<HTMLElement>
   );
 
-  consthandleSuccess = () => {
+  const handleSuccess = () => {
     setIsOpen(false);
   };
 
