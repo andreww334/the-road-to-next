@@ -1,8 +1,17 @@
 "use client";
 
-import { title } from "process";
-import React, { cloneElement, ReactElement, useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, {
+  cloneElement,
+  ReactElement,
+  useActionState,
+  useState,
+} from "react";
+import { Form } from "@/features/ticket/components/form/form";
+import { SubmitButton } from "@/features/ticket/components/form/submit-button";
+import {
+  ActionState,
+  EMPTY_ACTION_STATE,
+} from "@/features/ticket/components/form/utils/to-action-state";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,8 +23,8 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 
-type UseConfirmDialogProps = {
-  action: (formData: FormData) => Promise<void>;
+type UseConfirmDialogArgs = {
+  action: () => Promise<ActionState>;
   trigger: React.ReactNode;
   title?: string;
   description?: string;
@@ -26,14 +35,21 @@ const useConfirmDialog = ({
   trigger,
   title = "Are you absolutely sure?",
   description = "This action cannot be undone. Make sure you understand the consequences.",
-}: UseConfirmDialogProps) => {
+}: UseConfirmDialogArgs) => {
   const [isOpen, setIsOpen] = useState(false);
+
   const dialogTrigger = cloneElement(
     trigger as ReactElement,
     {
       onClick: () => setIsOpen((state) => !state),
     } as React.HTMLAttributes<HTMLElement>
   );
+
+  consthandleSuccess = () => {
+    setIsOpen(false);
+  };
+
+  const [actionState, formAction] = useActionState(action, EMPTY_ACTION_STATE);
   const dialog = (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
@@ -44,9 +60,13 @@ const useConfirmDialog = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <form action={action}>
-              <Button type="submit">Confirm</Button>
-            </form>
+            <Form
+              action={formAction}
+              actionState={actionState}
+              onSuccess={handleSuccess}
+            >
+              <SubmitButton label="Confirm" />
+            </Form>
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
