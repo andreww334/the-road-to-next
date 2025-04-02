@@ -1,3 +1,5 @@
+"use client";
+
 import { format } from "date-fns";
 import { LucideCalendar } from "lucide-react";
 import { useState } from "react";
@@ -16,24 +18,26 @@ type DatePickerProps = {
 };
 
 const DatePicker = ({ id, name, defaultValue }: DatePickerProps) => {
-  const [date, setDate] = useState<Date | undefined>(
-    defaultValue ? new Date(defaultValue) : new Date()
-  );
+  const trueDate = defaultValue
+    ? new Date(
+        new Date(defaultValue).valueOf() +
+          new Date(defaultValue).getTimezoneOffset() * 60 * 1000
+      )
+    : new Date();
+  const [date, setDate] = useState<Date | undefined>(trueDate);
   const [open, setOpen] = useState(false);
 
-  const formattedStringDate = date ? format(date, "yyyy-MM-dd") : "";
-  const handleSelect = (date?: Date) => {
-    setDate(date);
+  const handleSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
     setOpen(false);
   };
-
+  const formattedStringDate = date ? format(date, "yyyy-MM-dd") : "";
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className="w-full" id={id} asChild>
+      <PopoverTrigger id={id} className="w-full" asChild>
         <Button
-          variant={"outline"}
+          variant="outline"
           className="justify-start text-left font-normal"
-          onClick={() => setOpen(true)}
         >
           <LucideCalendar className="mr-2 h-4 w-4" />
           {formattedStringDate}
