@@ -1,4 +1,4 @@
-import { ActionState } from "@/features/ticket/components/form/utils/to-action-state";
+import { ActionState } from "@/components/form/utils/to-action-state";
 
 type FieldErrorProps = {
   actionState: ActionState;

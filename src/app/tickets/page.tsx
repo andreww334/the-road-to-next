@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import CardCompact from "@/components/card-compact";
+import { CardCompact } from "@/components/card-compact";
 import { Heading } from "@/components/Heading";
 import {} from "@/components/redirect-toast";
 import Spinner from "@/features/ticket/components/spinner";

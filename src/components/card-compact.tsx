@@ -34,4 +34,4 @@ const CardCompact = ({
   );
 };
 
-export default CardCompact;
+export { CardCompact };

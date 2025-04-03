@@ -6,12 +6,12 @@ import React, {
   useActionState,
   useState,
 } from "react";
-import { Form } from "@/features/ticket/components/form/form";
-import { SubmitButton } from "@/features/ticket/components/form/submit-button";
+import { Form } from "@/components/form/form";
+import { SubmitButton } from "@/components/form/submit-button";
 import {
   ActionState,
   EMPTY_ACTION_STATE,
-} from "@/features/ticket/components/form/utils/to-action-state";
+} from "@/components/form/utils/to-action-state";
 import {
   AlertDialog,
   AlertDialogAction,

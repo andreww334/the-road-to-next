@@ -7,7 +7,7 @@ import { z } from "zod";
 import {
   ActionState,
   fromErrorToActionState,
-} from "@/features/ticket/components/form/utils/to-action-state";
+} from "@/components/form/utils/to-action-state";
 import { lucia } from "@/lib/lucia";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
@@ -50,7 +50,7 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
-    cookies().set(
+    (await cookies()).set(
       sessionCookie.name,
       sessionCookie.value,
       sessionCookie.attributes

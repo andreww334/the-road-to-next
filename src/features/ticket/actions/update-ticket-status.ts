@@ -2,12 +2,12 @@
 
 import { TicketStatus } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
-import { ticketsPath } from "@/paths";
 import {
   fromErrorToActionState,
   toActionState,
-} from "../components/form/utils/to-action-state";
+} from "@/components/form/utils/to-action-state";
+import { prisma } from "@/lib/prisma";
+import { ticketsPath } from "@/paths";
 export const updateTicketStatus = async (
   ticketId: string,
   status: TicketStatus
