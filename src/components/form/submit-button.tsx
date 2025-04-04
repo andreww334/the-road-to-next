@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 
 type SubmitButtonProps = {
   label?: string;
-  icon?: React.ReactElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon?: React.ReactElement<any>;
   variant?:
     | "default"
     | "destructive"
@@ -30,7 +31,9 @@ const SubmitButton = ({ label, icon, variant, size }: SubmitButtonProps) => {
       {label}
       {pending ? null : icon ? (
         <span className={clsx({ "ml-2": !!label })}>
-          {cloneElement(icon, { className: "w-4 h-4" })}
+          {cloneElement(icon, {
+            className: "w-4 h-4",
+          })}
         </span>
       ) : null}
     </Button>
