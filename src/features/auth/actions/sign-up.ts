@@ -1,17 +1,20 @@
 "use server";
 
 import { hash } from "@node-rs/argon2";
+import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import {
   ActionState,
   fromErrorToActionState,
+  toActionState,
 } from "@/components/form/utils/to-action-state";
 import { lucia } from "@/lib/lucia";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/paths";
-const signupSchema = z
+
+const signUpSchema = z
   .object({
     username: z
       .string()
@@ -21,7 +24,7 @@ const signupSchema = z
         (value) => !value.includes(" "),
         "Username cannot contain spaces"
       ),
-    email: z.string().min(1, { message: "Email is required" }).max(191).email(),
+    email: z.string().min(1, { message: "Is required" }).max(191).email(),
     password: z.string().min(6).max(191),
     confirmPassword: z.string().min(6).max(191),
   })
@@ -34,12 +37,15 @@ const signupSchema = z
       });
     }
   });
+
 export const signUp = async (_actionState: ActionState, formData: FormData) => {
   try {
-    const { username, email, password } = signupSchema.parse(
+    const { username, email, password } = signUpSchema.parse(
       Object.fromEntries(formData)
     );
+
     const passwordHash = await hash(password);
+
     const user = await prisma.user.create({
       data: {
         username,
@@ -47,6 +53,7 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
         passwordHash,
       },
     });
+
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
 
@@ -56,7 +63,19 @@ export const signUp = async (_actionState: ActionState, formData: FormData) => {
       sessionCookie.attributes
     );
   } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      return toActionState(
+        "ERROR",
+        "Either email or username is already in use",
+        formData
+      );
+    }
+
     return fromErrorToActionState(error, formData);
   }
+
   redirect(ticketsPath());
 };
