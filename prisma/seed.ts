@@ -1,6 +1,19 @@
 import { PrismaClient } from "@prisma/client";
+import console from "console";
+import { hashPassword } from "@/features/password/utils/hash-and-verify";
 
 const prisma = new PrismaClient();
+
+const users = [
+  {
+    username: "admin",
+    email: "admin@admin.com",
+  },
+  {
+    username: "user",
+    email: "wangandrw330@gmail.com",
+  },
+];
 
 const tickets = [
   {
@@ -29,10 +42,25 @@ const tickets = [
 const seed = async () => {
   const t0 = performance.now();
   console.log("DB Seed Started");
+
+  await prisma.user.deleteMany();
   await prisma.ticket.deleteMany();
-  await prisma.ticket.createMany({
-    data: tickets,
+
+  const passwordHash = await hashPassword("password");
+  const dbUsers = await prisma.user.createManyAndReturn({
+    data: users.map((user) => ({
+      ...user,
+      passwordHash,
+    })),
   });
+
+  await prisma.ticket.createMany({
+    data: tickets.map((ticket) => ({
+      ...ticket,
+      userId: dbUsers[0].id,
+    })),
+  });
+
   const t1 = performance.now();
   console.log(`DB Seed Finished (${t1 - t0} ms)`);
 };

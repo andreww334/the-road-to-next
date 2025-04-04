@@ -6,5 +6,12 @@ export const getTickets = async (): Promise<Ticket[]> => {
     orderBy: {
       createdAt: "desc",
     },
+    include: {
+      user: {
+        select: {
+          username: true,
+        },
+      },
+    },
   });
 };
