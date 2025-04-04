@@ -10,7 +10,6 @@ import { signIn } from "../actions/sign-in";
 
 const SignInForm = () => {
   const [actionState, action] = useActionState(signIn, EMPTY_ACTION_STATE);
-  console.log(`the action state: ${JSON.stringify(actionState, null, 2)}`);
   return (
     <Form action={action} actionState={actionState}>
       <Input
