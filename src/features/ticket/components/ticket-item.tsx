@@ -40,7 +40,7 @@ const TicketItem = async ({ ticket, isDetail }: TicketItemProps) => {
   );
 
   const editButton = isTicketOwner ? (
-    <Button variant="outline" size="icon">
+    <Button variant="outline" size="icon" asChild>
       <Link prefetch href={ticketEditPath(ticket.id.toString())}>
         <LucidePencil className="w-4 h-4" />
       </Link>
