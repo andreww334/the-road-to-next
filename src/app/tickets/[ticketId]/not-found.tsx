@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ticketsPath } from "@/paths";
 
 export default function NotFound() {
+  console.log(`the not found`);
   return (
     <Placeholder
       label="We could not find your ticket"
