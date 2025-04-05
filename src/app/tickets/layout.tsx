@@ -6,5 +6,6 @@ export default async function AuthenticatedLayout({
   children: React.ReactNode;
 }>) {
   await getAuthOrRedirect();
+
   return <>{children}</>;
 }
