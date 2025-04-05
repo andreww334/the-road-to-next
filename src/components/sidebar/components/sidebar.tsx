@@ -19,13 +19,13 @@ const Sidebar = () => {
   };
 
   if (!user || !fetched) {
-    return <div className="w-[78px] bg-secondary/20 absolute" />;
+    return <div className="w-[78px] bg-secondary/20" />;
   }
 
   return (
     <nav
       className={cn(
-        "animate-sidebar-from-left absolute peer",
+        "animate-sidebar-from-left",
         "h-screen border-r pt-24",
         isTransition && "duration-200",
         isOpen ? "md:w-60 w-[78px]" : "w-[78px]"
